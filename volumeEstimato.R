@@ -4,7 +4,7 @@
 #load packages
 library(dplyr)
 
-#read the measurement csv
+#read the measurement csv:
 
 data<-read.csv("measurements.csv")
 

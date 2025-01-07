@@ -5,7 +5,7 @@
 set.seed(123)
 
 #creating the species data - 5 shark species: 
-spec_names <- c("Great White Shark", "Bull Shark", "Whale Shark", "Galapagos Shark", "Blacktip Shark")
+spec_names <- c("great_white_shark", "bull_shark", "whale_shark", "galapagos_shark", "blacktip_shark")
 species_vector <- sample(spec_names, size = 100, replace = T) #100 random samples 
 
 #Generate fin width (limb)
@@ -21,7 +21,7 @@ shark_data$fin_length <- fin_length #add to data
 
 head (shark_data)#check
 
-#observer names
+#observer names:
 observer_name <- c("Meredith", "Ben", "Olivia") #3 random names as observers
 observer_name_vec <- sample(observer_name, size = 100, replace = T)
 
