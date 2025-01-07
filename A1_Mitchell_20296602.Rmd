@@ -1,0 +1,130 @@
+---
+title: "Shark Fin Volume Analysis Report"
+author: "Emma Mitchell"
+date: "2025-01-07"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## [GitHub Repository](https://github.com/emmaamitchyy/biol432)
+
+### Introduction
+
+This report analyzes shark fin measurement data, including fin width and length, and estimates the fin volume for various shark species using R. The shark species include Great White Sharks, Bull Sharks, Whale Sharks, Black tip Sharks, and Galapagos Sharks. The data is processed, analyzed and visualized using various R scripts. The goal of this report is to gain insights into fin volumes across shark species.
+
+### Data Generation:
+
+Load the Needed Packages:
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+library(tidyr)
+```
+
+Before running the analysis, the data is generated using the 'data_generator.R' script. This script creates the 'measurement.csv' file, which contains data about shark species and fin measurements. This data set is then used to estimate fin volumes and perform further analysis
+
+```{r}
+source('datagenerato.R')
+```
+
+The generated data is then used to estimate the volume of various shark species fins. This value is then used to perform further analysis and compare fins across the five species measured.
+
+```{r}
+source('volumeEstimato.R')
+```
+
+In order to run analyses, open the measurement data generated from the volume estimator scrip:
+
+```{r}
+data<-read.csv("measurements.csv")
+```
+
+```{r}
+head(data)
+```
+
+### Data Analysis:
+
+To ensure clarity and organization in the data set, the data is sorted by species, observer, and then limb volume. This sorting allows us to easily group and compare measurements within each species and observer combination, while also identifying trends or outliers in limb volume. Organizing the data in this manner provides a structured foundation for further analysis and visualization.
+
+```{r}
+sorted_data <- data %>% arrange(Species, Observer, Volume)
+```
+
+```{r}
+head(sorted_data)
+```
+
+The following table provides an overview of the average volume for five well-known shark species, showcasing the substantial differences in size between them.
+
+```{r}
+avg_vol <- sorted_data %>%
+  group_by(Species) %>%
+  summarise(Average_Volume = mean(Volume))
+
+#display table: 
+avg_vol
+```
+
+These variations highlight the diversity in size and mass across different shark species, which can be influenced by factors like age, environmental conditions, and genetic traits.
+
+The table below illustrates the number of observations recorded for each shark species by different observers. This data helps to provide a clearer picture of how often each species is encountered and studied, reflecting both the frequency of sightings and the efforts of individual observers.
+
+```{r}
+# Calculate the number of observations for each species-observer combination: 
+
+obs_count <- sorted_data %>% 
+  group_by(Species, Observer) %>%
+  summarise(num_observations = n())
+
+#display the table of observations: 
+obs_count
+```
+
+### Results:
+
+The following box plot is important for visualizing the distribution of fin volumes across different shark species. This plot highlights the variation in fin sizes, showing the median, quartiles, and potential outliers for each species. It provides a clear comparison of fin volume distributions, helping to illustrate the differences in size between species such as the Great White Shark, Bull Shark, Whale Shark, Galapagos Shark, and Black tip Shark.
+
+```{r}
+#box plot to compare the distributions of fin volumes for each species of shark:
+ggplot(sorted_data, aes(x=Species, y=Volume))+
+  geom_boxplot()+
+  labs(title = "Box Plot of Fin Volume by Species of Shark",
+       x = "Shark Species", y = "Fin Volume(cm^3)")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+**Figure 1. Box plot of fin volumes by shark species***.*
+
+This plot displays the distribution of fin volumes for five shark species: Great White Shark, Bull Shark, Whale Shark, Galapagos Shark, and Black tip Shark. The boxes represent the interquartile range (IQR), with the median indicated by the line inside the box. Outliers are marked as individual points, providing insights into the variation in fin size within each species
+
+A multi-panel plot was created to display the frequency histograms showing the distribution of limb volumes for each shark species. This visualization provides an effective way to compare the variations in limb volumes across different species. To facilitate the creation of this plot, the data was first transformed from a wide to a long format using appropriate R code. This allowed for easier plotting of the data by species. Each panel in the plot corresponds to a different species, and the histograms illustrate the frequency distribution of limb volumes within each species. This approach helps in understanding the differences and patterns in limb volume across the species in the study.
+
+```{r}
+# Convert the data to long format
+shark_data_long <- sorted_data %>%
+  pivot_longer(cols = Volume, names_to = "Measurement", values_to = "Value")
+
+# Create a multi-panel histogram of fin volume distributions for each species
+ggplot(shark_data_long, aes(x = Value)) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black") +
+  facet_wrap(~Species) +
+  theme_minimal() +
+  labs(title = "Distribution of Fin Volume by Shark Species", x = "Fin Volume (cm³)", y = "Frequency")
+```
+
+**Figure 2. Distribution of fin volume by shark species***.*
+
+This multi-panel histogram shows the frequency distribution of fin volumes (in cm³) for each shark species. The data was converted from wide to long format using the pivot_longer function, with the fin volume measurements labeled as "Value" and grouped by species. Each panel represents a different species of shark, and the bin width for the histograms is set to 10 cm³. The plot highlights the variation in fin volume across shark species, with each species' distribution displayed separately for comparison.
