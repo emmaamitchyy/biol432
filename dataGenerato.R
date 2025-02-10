@@ -5,7 +5,7 @@
 set.seed(123)
 
 #creating the species data - 5 shark species: 
-spec_names <- c("great_white_shark", "bull_shark", "whale_shark", "galapagos_shark", "blacktip_shark")
+spec_names <- c("Charcharodon carcharias", "Carcharhinus leucas", "Rhincodon typus", "Carcharhinus galapagensis", "Carcharhinus limbatus")
 species_vector <- sample(spec_names, size = 100, replace = T) #100 random samples 
 
 #Generate fin width (limb)
