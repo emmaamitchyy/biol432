@@ -1,0 +1,414 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Shark Fin Volume Analysis Report},
+  pdfauthor={Emma Mitchell},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Shark Fin Volume Analysis Report}
+\author{Emma Mitchell}
+\date{2025-01-07}
+
+\begin{document}
+\maketitle
+
+\subsection{\texorpdfstring{\href{https://github.com/emmaamitchyy/biol432}{GitHub
+Repository}}{GitHub Repository}}\label{github-repository}
+
+\subsubsection{Introduction}\label{introduction}
+
+This report analyzes shark fin measurement data, including fin width and
+length, and estimates the fin volume for various shark species using R.
+The shark species include Great White Sharks, Bull Sharks, Whale Sharks,
+Black tip Sharks, and Galapagos Sharks. The data is processed, analyzed
+and visualized using various R scripts. The goal of this report is to
+gain insights into fin volumes across shark species.
+
+\subsubsection{Data Generation:}\label{data-generation}
+
+Load the Needed Packages:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v forcats   1.0.0     v readr     2.1.5
+## v ggplot2   3.5.1     v stringr   1.5.1
+## v lubridate 1.9.4     v tibble    3.2.1
+## v purrr     1.0.2     v tidyr     1.3.1
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyr)}
+\end{Highlighting}
+\end{Shaded}
+
+Before running the analysis, the data is generated using the
+`data\_generator.R' script. This script creates the `measurement.csv'
+file, which contains data about shark species and fin measurements. This
+data set is then used to estimate fin volumes and perform further
+analysis
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(}\StringTok{\textquotesingle{}datagenerato.R\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The generated data is then used to estimate the volume of various shark
+species fins. This value is then used to perform further analysis and
+compare fins across the five species measured.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(}\StringTok{\textquotesingle{}volumeEstimato.R\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+In order to run analyses, open the measurement data generated from the
+volume estimator scrip:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"measurements.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Species  Fin_Width Limb_Length Observer       Volume
+## 1    whale_shark  0.1107716    178.3582   Olivia    0.5729528
+## 2    whale_shark  1.2795166    179.4478   Olivia   76.9127921
+## 3     bull_shark  4.5308327    204.6311   Olivia 1099.7557579
+## 4     bull_shark  6.6261812    126.9494 Meredith 1459.2376975
+## 5    whale_shark 17.9230591    117.8107      Ben 9907.8099131
+## 6 blacktip_shark  0.3644350    128.5974      Ben    4.4713723
+\end{verbatim}
+
+\subsubsection{Data Analysis:}\label{data-analysis}
+
+To ensure clarity and organization in the data set, the data is sorted
+by species, observer, and then limb volume. This sorting allows us to
+easily group and compare measurements within each species and observer
+combination, while also identifying trends or outliers in limb volume.
+Organizing the data in this manner provides a structured foundation for
+further analysis and visualization.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sorted\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(Species, Observer, Volume)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(sorted\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Species Fin_Width Limb_Length Observer       Volume
+## 1 blacktip_shark  0.364435   128.59737      Ben     4.471372
+## 2 blacktip_shark 10.359171    78.71772      Ben  2211.521092
+## 3 blacktip_shark 13.538955   110.41288      Ben  5298.569416
+## 4 blacktip_shark 10.676751   258.32673      Ben  7709.322801
+## 5 blacktip_shark 16.849306   143.56846      Ben 10670.670851
+## 6 blacktip_shark 18.482903   136.34827      Ben 12194.349591
+\end{verbatim}
+
+The following table provides an overview of the average volume for five
+well-known shark species, showcasing the substantial differences in size
+between them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avg\_vol }\OtherTok{\textless{}{-}}\NormalTok{ sorted\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Species) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{Average\_Volume =} \FunctionTok{mean}\NormalTok{(Volume))}
+
+\CommentTok{\#display table: }
+\NormalTok{avg\_vol}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 2
+##   Species           Average_Volume
+##   <chr>                      <dbl>
+## 1 blacktip_shark             4723.
+## 2 bull_shark                 5582.
+## 3 galapagos_shark            4286.
+## 4 great_white_shark          5524.
+## 5 whale_shark                5506.
+\end{verbatim}
+
+These variations highlight the diversity in size and mass across
+different shark species, which can be influenced by factors like age,
+environmental conditions, and genetic traits.
+
+The table below illustrates the number of observations recorded for each
+shark species by different observers. This data helps to provide a
+clearer picture of how often each species is encountered and studied,
+reflecting both the frequency of sightings and the efforts of individual
+observers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate the number of observations for each species{-}observer combination: }
+
+\NormalTok{obs\_count }\OtherTok{\textless{}{-}}\NormalTok{ sorted\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(Species, Observer) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{num\_observations =} \FunctionTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Species'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#display the table of observations: }
+\NormalTok{obs\_count}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 3
+## # Groups:   Species [5]
+##    Species           Observer num_observations
+##    <chr>             <chr>               <int>
+##  1 blacktip_shark    Ben                     7
+##  2 blacktip_shark    Meredith                3
+##  3 blacktip_shark    Olivia                  9
+##  4 bull_shark        Ben                     8
+##  5 bull_shark        Meredith                6
+##  6 bull_shark        Olivia                  6
+##  7 galapagos_shark   Ben                     2
+##  8 galapagos_shark   Meredith                5
+##  9 galapagos_shark   Olivia                 10
+## 10 great_white_shark Ben                     9
+## 11 great_white_shark Meredith                4
+## 12 great_white_shark Olivia                  8
+## 13 whale_shark       Ben                     9
+## 14 whale_shark       Meredith                5
+## 15 whale_shark       Olivia                  9
+\end{verbatim}
+
+\subsubsection{Results:}\label{results}
+
+The following box plot is important for visualizing the distribution of
+fin volumes across different shark species. This plot highlights the
+variation in fin sizes, showing the median, quartiles, and potential
+outliers for each species. It provides a clear comparison of fin volume
+distributions, helping to illustrate the differences in size between
+species such as the Great White Shark, Bull Shark, Whale Shark,
+Galapagos Shark, and Black tip Shark.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#box plot to compare the distributions of fin volumes for each species of shark:}
+\FunctionTok{ggplot}\NormalTok{(sorted\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Species, }\AttributeTok{y=}\NormalTok{Volume))}\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Box Plot of Fin Volume by Species of Shark"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Shark Species"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Fin Volume(cm\^{}3)"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{A1_Mitchell_20296602_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\textbf{Figure 1. Box plot of fin volumes by shark species}\emph{.}
+
+This plot displays the distribution of fin volumes for five shark
+species: Great White Shark, Bull Shark, Whale Shark, Galapagos Shark,
+and Black tip Shark. The boxes represent the interquartile range (IQR),
+with the median indicated by the line inside the box. Outliers are
+marked as individual points, providing insights into the variation in
+fin size within each species
+
+A multi-panel plot was created to display the frequency histograms
+showing the distribution of limb volumes for each shark species. This
+visualization provides an effective way to compare the variations in
+limb volumes across different species. To facilitate the creation of
+this plot, the data was first transformed from a wide to a long format
+using appropriate R code. This allowed for easier plotting of the data
+by species. Each panel in the plot corresponds to a different species,
+and the histograms illustrate the frequency distribution of limb volumes
+within each species. This approach helps in understanding the
+differences and patterns in limb volume across the species in the study.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Convert the data to long format}
+\NormalTok{shark\_data\_long }\OtherTok{\textless{}{-}}\NormalTok{ sorted\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =}\NormalTok{ Volume, }\AttributeTok{names\_to =} \StringTok{"Measurement"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"Value"}\NormalTok{)}
+
+\CommentTok{\# Create a multi{-}panel histogram of fin volume distributions for each species}
+\FunctionTok{ggplot}\NormalTok{(shark\_data\_long, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Value)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{10}\NormalTok{, }\AttributeTok{fill =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{Species) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Distribution of Fin Volume by Shark Species"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Fin Volume (cm³)"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Frequency"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{A1_Mitchell_20296602_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\textbf{Figure 2. Distribution of fin volume by shark species}\emph{.}
+
+This multi-panel histogram shows the frequency distribution of fin
+volumes (in cm³) for each shark species. The data was converted from
+wide to long format using the pivot\_longer function, with the fin
+volume measurements labeled as ``Value'' and grouped by species. Each
+panel represents a different species of shark, and the bin width for the
+histograms is set to 10 cm³. The plot highlights the variation in fin
+volume across shark species, with each species' distribution displayed
+separately for comparison.
+
+\end{document}

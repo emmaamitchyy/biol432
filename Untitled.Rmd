@@ -1,0 +1,70 @@
+---
+title: "432_group1_A2"
+author: "Emma Mitchell"
+date: "2025-01-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Emma Mitchell - 20296602 
+
+Load the Needed Packages:
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+data<-read.csv("/Users/emmamitchell/Downloads/BirdBehaviour.csv")
+```
+Check data integrity: 
+
+```{r}
+class(data)
+dim(data)
+summary(data)
+sum(is.na(data))
+head(data)
+tail(data)
+```
+
+no na's 
+
+Create a multi-panel figure to investigate how the four behavioural measurements differ among bird species. You must choose what kind of plots to use here. You may want to try a few different options and then choose the one that best communicates the results. Be sure to include a figure caption.
+
+
+```{r}
+ggplot(data, aes(x = Species, y = ))
+```
+
+
+
+Calculate the correlation coefficient between each pair of behaviours. 
+
+
+
+Add a paragraph of text explaining your interpretation. What do these figures and correlations suggest to you about the behaviour of these birds?
+
+
+
+
+
+
+
+
+

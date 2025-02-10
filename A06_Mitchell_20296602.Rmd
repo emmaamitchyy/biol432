@@ -5,30 +5,32 @@ date: "2025-02-10"
 output: html_document
 runtime: shiny
 ---
-##Biol 432: Assignmnet 6 - High Performance Computing## 
+
+## Biol 432: Assignment 6 - High Performance Computing
+
 Emma Mitchell - 20296602
 
-Git Hub: 
-https://github.com/emmaamitchyy/biol432
+Git Hub: <https://github.com/emmaamitchyy/biol432>
 
+Open Libraries:
 
-Open Libraries: 
 ```{r}
 library(doParallel)
 library(parallel)
 library(foreach)
 ```
 
+Check for cores in the system:
 
-Check for cores in the system: 
 ```{r}
 num_cores <- detectCores()
 print(num_cores)
 ```
 
-There are 8 cores in this system. This means that there are 8 individual processing units within the CPU, all of which excute instructions and preform the calculations. 
+There are 8 cores in this system. This means that there are 8 individual processing units within the CPU, all of which execute instructions and preform the calculations.
 
 Run a loop 4,000 times, and each time calculate the mean of 100,000 random numbers from a normal distribution with mean of 10 and standard deviation of 3:
+
 ```{r}
 start_time <- Sys.time()
 for(i in 1:4000){
@@ -37,7 +39,8 @@ for(i in 1:4000){
 end_time <- Sys.time()
 ```
 
-Calculate run time: 
+Calculate run time:
+
 ```{r}
 serial_runtime <- end_time-start_time
 print(serial_runtime)
@@ -45,19 +48,21 @@ print(serial_runtime)
 
 The run time of this loop is approximately 20 seconds.
 
-a multi-threaded program would likely run much faster than the serial program as it allows multiple versions of the loop to run at the same time across the CPU cores. The serial program processes each version sequentially needing much more time. 
+a multi-threaded program would likely run much faster than the serial program as it allows multiple versions of the loop to run at the same time across the CPU cores. The serial program processes each version sequentially needing much more time.
 
-in order to test this theory, we can predict the time it would take to run the loop in parallel based on the number of threads: 
+in order to test this theory, we can predict the time it would take to run the loop in parallel based on the number of threads:
+
 ```{r}
 pred_time <- as.numeric(serial_runtime) / (num_cores - 1)
 print(pred_time)
 ```
 
-The predicted parallel run time for this loop is approximately 3 seconds. Thus, as predicted, the multi-threaded program would run much faster than the serial program with the 8 cores. 
+The predicted parallel run time for this loop is approximately 3 seconds. Thus, as predicted, the multi-threaded program would run much faster than the serial program with the 8 cores.
 
 The loop can be run in parallel to get the actual time it would take:
 
-Make the cluster using all but one core. register the cores for parallel processing: 
+Make the cluster using all but one core. register the cores for parallel processing:
+
 ```{r}
 cores <- makeCluster(num_cores - 1)
 registerDoParallel(cores)
@@ -73,15 +78,15 @@ parallel_runtime <- end_time_parallel - start_time_parallel
 print(parallel_runtime)
 
 ```
+
 The parallel run time for this loop is approximately 6.5 seconds
 
-Stop the cluster: 
+Stop the cluster:
+
 ```{r}
 stopCluster(cores)
 ```
 
 Compare the run-time for your parallel loop with the run-time for your serial loop and the theoretical run-time you calculated for the parallel loop based on the number of cores in your computer. Summarize these results in a sentence. Is the theoretical shorter or longer than the actual run-time of your parallel program? Explain why.
 
-The results from these calculations show that the serial loop's runtime was ~20 secs, the theoretical pparallel loops time was ~3 secs and the actual parallel time was ~6.5 secs. The parallel program significantly reduces the time it takes to run the loop. The actual parallel run time was longer than the predicted theoretical runtime by 3 seconds. This can happen due to operational "costs" associated with parallel execution. These "costs" could be the distribution of the data (the tasks splitting among cores), the processing time it takes to manage the memory, and the combination of the results from each core. Although the parallel loop takes longer than the theoretical speed, it is still much faster than serial execution. This shows that it is very efficient compute in parallel, especially for large datasets, 
-
-
+The results from these calculations show that the serial loop's run time was \~20 secs, the theoretical parallel loops time was \~3 secs and the actual parallel time was \~6.5 secs. The parallel program significantly reduces the time it takes to run the loop. The actual parallel run time was longer than the predicted theoretical run time by 3 seconds. This can happen due to operational "costs" associated with parallel execution. These "costs" could be the distribution of the data (the tasks splitting among cores), the processing time it takes to manage the memory, and the combination of the results from each core. Although the parallel loop takes longer than the theoretical speed, it is still much faster than serial execution. This shows that it is very efficient compute in parallel, especially for large data sets.
