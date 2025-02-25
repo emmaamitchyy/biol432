@@ -1,0 +1,97 @@
+---
+title: "Analysis"
+author: 
+- "Emma Mitchell - 20296602"
+- "Christina Meier - 20213829"
+- "Rachel Dolson - 20339605"
+- "Maddigan Kales - 20259834"
+- "Laavanya Joshi - 20288965"
+date: "2025-02-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## BIOL 432: Assignment 7: Sequencing and Alignments 
+
+Git Hub: <https://github.com/emmaamitchyy/biol432>
+
+#Part 1: 
+
+Importing the sequence file created in the r script: 
+```{r}
+Sequences <- read.csv("Sequences.csv", row.names = 1)
+```
+
+Count the number of each base pair in the three sequences: 
+
+```{r}
+nucleotides <- data.frame(
+  Sequence_ID = Sequences$Name,
+  A = sapply(Sequences$Sequence, function(seq) sum(strsplit(seq,"")[[1]] == "A")),
+T = sapply(Sequences$Sequence, function(seq) sum(strsplit(seq,"")[[1]] == "T")), 
+C = sapply(Sequences$Sequence, function(seq) sum(strsplit(seq,"")[[1]] == "C")),
+G = sapply(Sequences$Sequence, function(seq) sum(strsplit(seq,"")[[1]] == "G"))
+)
+print(nucleotides)
+```
+
+
+Calculate and display GC content: 
+
+```{r}
+nucleotides$GC_Content <- round((nucleotides$G + nucleotides$C) / (nucleotides$A + nucleotides$T + nucleotides$G + nucleotides$C) *100, 2)
+
+#Make table: 
+print(nucleotides[, c("Sequence_ID", "GC_Content")])
+```
+
+Image of Borrelia burgdorferi: 
+```{r}
+knitr::include_graphics("https://phil.cdc.gov//PHIL_Images/13177/13177_lores.jpg")
+```
+
+For more information please see: 
+https://en.wikipedia.org/wiki/Borrelia_burgdorferi 
+
+#PART 02: 
+
+##Identification of an Unknown DNA Sequence from a Patient Sample Using Nanopore Sequencing and BLAST Analysis
+
+In this study, we are analyzing a DNA sequence obtained from a critically ill patient’s blood sample using nanopore sequencing and a bioinformatics pipeline that filters out human DNA.
+
+Using NCBI BLAST, we will conduct a sequence similarity search is identify the closest known genetic match. By aligning the unknown sequence to reference genomes, we will assess whether it belongs to a human, bacterial, viral, or other non-human organism. The findings will provide critical insights for the clinician regarding the necessity of further intervention. 
+
+Load packages: 
+```{r}
+library(rentrez)
+library(ggplot2)
+library(annotate)
+
+```
+
+Defining the query sequence:
+```{r}
+query_seq <- "GCCTGATGGAGGGGGATAACTACTGGAAACGGTAGCTAATACCGCATGAC
+CTCGCAAGAGCAAAGTGGGGGACCTTAGGGCCTCACGCCATCGGATGAAC
+CCAGATGGGATTAGCTAGTAGGTGGGGTAATGGCTCACCTAGGCGACGAT
+CCCTAGCTGGTCTGAGAGGATGACCAGCCACACTGGAACTGAGACACGGT
+CCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGCACAATGGGCGCAA"
+```
+
+Running the BLAST search: 
+```{r}
+blast_results <- blastSequences(query_seq, 
+                                as="data.frame", 
+                                timeout=300, 
+                                hitListSize=50)
+
+# View top hits
+head(blast_results)
+```
+
+Our BLAST search identified *Yersinia pestis* as the top result, a highly pathogenic bacterium responsible for the plague. This disease can be severe and potentially fatal if left untreated, making it a critical finding. Given the seriousness of *Y. pestis* infections, the clinician should conduct confirmatory tests such as PCR, culture, or serological assays to verify the diagnosis. If confirmed, immediate antibiotic treatment with gentamicin, streptomycin, or doxycycline is necessary to prevent complications. Depending on the form of the disease—bubonic, septicemic, or pneumonic—the patient may present with symptoms ranging from swollen lymph nodes to severe pneumonia or sepsis. Due to its potential for outbreaks, public health authorities should be notified, and isolation measures may be required in cases of pneumonic plague.
+
+
