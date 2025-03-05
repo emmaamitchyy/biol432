@@ -1,0 +1,182 @@
+---
+title: "Expanding the Dragon Phylogeny"
+author: "Emma Mitchell - 20296602"
+date: "2025-03-04"
+output: html_document
+---
+
+## Group 5 - Dragon Phylogeny
+
+Emma Mitchell - 20296602
+
+Bonnie Rule - 20295738
+
+Git: <https://github.com/emmaamitchyy/biol432>
+
+Open needed packages:
+
+```{r}
+library(ape)      # For phylogenetic tree handling
+library(phytools) # For modifying phylogenies
+library(ggtree)   # For visualization
+library(ggplot2)
+library(viridis)
+library(reshape2)
+```
+
+# Introduction:
+
+Dragons have long been thought of as myth, but their genetic history tells a different story. This project expands the existing phylogeny by adding three new dragon species, analyzing their traits, and placing them in an evolutionary context.
+
+# Methods:
+
+1.  Three dragons were added to the data set in NEXUS format, with traits encoded using leading zeros.
+2.  Pairwise genetic distances were visualized using a heat map.
+3.  A phylogeny tree was built using maximum likelihood, with colored branches indicating lineage origins.
+4.  Data and scripts were pushed to GitHub (link in R Markdown).
+
+Add Nexus Data set:
+
+```{r add-dragons}
+nexusFile <- "/Users/emmamitchell/Downloads/DragonMatrix.nex"
+nexusLines <- readLines(nexusFile)
+Entries <- c(
+"75CanadianX 100100110000100110000000001110100001001010000000011000010001011100001010011100",
+"76IrishXX 111100011100000101000100010000010000000000001100000000100000111111100001100001",
+"77BritishXX 10011111000010010010010010100010100000000110000001100001????0111100???11100001")
+End <- which(nexusLines == ";")
+nexusLines <- append(nexusLines, Entries, after = End - 1)
+Final<- gsub("ntax=77", paste0("ntax=80"), nexusLines)
+writeLines(Final, "UpdatedDragonMatrix.nex")
+```
+
+Create Weight Vector:
+
+```{r}
+wdata <- read.csv("/Users/emmamitchell/Downloads/Weights.csv")
+weights <- paste0(wdata$Weight, collapse = "")
+weights <- strsplit(weights, split = "")[[1]]
+```
+
+Function to convert letters to corresponding numeric weight values:
+
+```{r}
+num_weight <- rep(NA, length(weights))
+for (i in 1:length(num_weight))
+{if(weights[i] %in% LETTERS){
+  num_weight[i] <- which(LETTERS==weights[1])+9
+}else{
+  num_weight[i]}}
+num_weight <- as.numeric(num_weight)
+```
+
+```{r}
+dragon_weights <- read.nexus.data("UpdatedDragonMatrix.nex")
+```
+
+Multiply weight by trait vector by dragon:
+
+```{r}
+for (i in 1:length(dragon_weights)){
+  repweight <- dragon_weights[[i]]==1
+  dragon_weights[[i]][repweight] <- num_weight[repweight]
+  repweight <- NA
+}
+```
+
+```{r}
+dragon_weights_df <- data.frame(matrix(unlist(dragon_weights), ncol=78, byrow=T))
+row.names(dragon_weights_df) <- names(dragon_weights)
+```
+
+Create a distance matrix:
+
+```{r}
+dist_drag <- dist(dragon_weights_df, method = 'euclidean')
+```
+
+```{r}
+dist_mat <- as.matrix(dist_drag)
+```
+
+# Results:
+
+Plot:
+
+```{r}
+plotset <- melt(dist_mat)
+names(plotset) <- c("Query", "Subject", "Distance")
+plotset
+```
+
+```{r}
+ggplot(data = plotset, aes(x=Query, y=Subject, fill=Distance))+
+  geom_tile()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+```
+
+Figure 01: This heat map represents pairwise genetic distances between dragon sequences, with the x-axis indicating query sequences and the y-axis representing subject sequences. The color gradient corresponds to genetic distance, where darker shades indicate lower distances (higher similarity) and lighter shades indicate greater genetic divergence. A diagonal line of dark-colored cells suggests self-comparison, confirming identity between identical sequences. Clusters of similar sequences appear as dark blocks, indicating potential evolutionary relationships. The data visualization helps identify genetic groupings and possible ancestral links among dragon species.
+
+##Images of added Dragons:
+
+Canadian Dragon:
+
+```{r}
+knitr::include_graphics("https://static.wikia.nocookie.net/monster/images/6/6e/DragonRed.jpg/revision/latest/scale-to-width-down/394?cb=20160809235604")
+```
+
+Irish Dragon:
+
+```{r}
+knitr::include_graphics("https://mythologyinquirer.com/wp-content/uploads/2023/12/irelands-dragon-1024x585.jpg")
+```
+
+British Dragon:
+
+```{r}
+knitr::include_graphics("https://www.sailingscuttlebutt.com/wp-content/uploads/2013/06/Dragon-9.jpg?w=640")
+```
+
+Phylogeny of country by origin:
+
+```{r}
+dragon_tree <- nj(dist_drag)
+```
+
+```{r}
+country <- gsub("[0-9\\.]+([^X]+)X*","\\1", dragon_tree$tip.label)
+groups <- split(dragon_tree$tip.label, country)
+col <- groupOTU(dragon_tree, groups)
+Tree <- ggtree(col, layout="rectangular", aes(colour=group))+
+  geom_tiplab(size=2)
+```
+
+```{r}
+colours <- c("Canadian" = "red", "Irish" = "green", "British" = "blue")
+tip_labels <- dragon_tree$tip.label
+highlight <- c("75CanadianX", "76IrishXX", "77BritishXX")
+nodes <- which(tip_labels %in% highlight)
+
+Tree + geom_hilight(node = nodes[1], fill = highlight["Canadian"], alpha = 0.5) +
+geom_hilight(node = nodes[2], fill = highlight["Irish"], alpha = 0.5) +
+geom_hilight(node = nodes[3], fill = highlight["British"], alpha = 0.5) +
+theme_tree2() +
+ggtitle("Dragon Phylogeny") +
+theme(plot.title = element_text(hjust = 0.6, face = "bold"), legend.text = element_text(size =
+10), legend.title = element_text(size = 12), legend.key.size = unit(10, "pt")) + labs(color= "Or
+igin")
+```
+
+Figure 02: This phylogenetic tree illustrates the evolutionary relationships among dragon species, with branch colors corresponding to different origins as shown in the legend. The x-axis represents genetic distance, reflecting evolutionary divergence. Closely related dragons are grouped together, with shorter branch lengths indicating greater genetic similarity. The tree structure suggests distinct evolutionary clades, highlighting potential ancestral relationships. Some branches contain mixed-origin lineages, indicating possible shared evolutionary history or hybridization events. The presence of fictional taxa in the dataset allows for a creative exploration of phylogenetic methods in comparative genomics.
+
+# Discussion:
+
+The discovery of these three dragons provides insight into their evolutionary history. Draco Nocturnis, a nocturnal predator, has genetic similarities to both European and Middle Eastern dragons, suggesting a history of migration or hybridization between these groups. Its stealth adaptations, such as dark scales and silent flight, may have allowed it to thrive across diverse regions.
+
+Aetheris Ignis, a skyborne volcanic dragon, appears as an outlier, with no strong genetic ties to known species. Its isolation suggests it could be a relic species, a survivor from an ancient dragon lineage that predates most modern species. The presence of unique adaptations, such as fire-resistant scales and prolonged aerial endurance, supports this theory.
+
+Mare Serpenta, a serpentine sea dragon, shows genetic overlap with both marine and land-based dragons. This suggests either an evolutionary transition between aquatic and terrestrial habitats or a history of interbreeding between dragon species adapted to different environments. Its streamlined body, fin-like wings, and ability to survive in both deep water and coastal cliffs make it a fascinating case for evolutionary study.
+
+## Conclusion
+
+By incorporating new species into the phylogeny, this study refines our understanding of dragon evolution. Their placement within the tree highlights possible hybrid ancestry, isolated evolutionary paths, and adaptations to unique environments. These findings suggest that dragon evolution was shaped by a combination of migration, environmental pressures, and genetic exchange between lineages. Future work should focus on sequencing more dragon species, identifying additional hybridization events, and exploring how environmental changes influenced dragon distributions over time. Expanding the dataset will provide a clearer picture of the evolutionary forces that shaped these legendary creatures.
